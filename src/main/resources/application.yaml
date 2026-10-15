@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: simonjp
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/simonjp
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    default-schema: public
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 2s
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+  cache:
+    type: redis
+    redis:
+      time-to-live: 10m
+      cache-null-values: false
+
+# S3-compatible storage (MinIO, sesuai service `minio` di compose.yml).
+# Belum ada client dependency, jadi properti custom ini tinggal dibaca
+# saat MinIO/S3 client ditambahkan nanti.
+app:
+  s3:
+    endpoint: http://127.0.0.1:9000
+    console-endpoint: http://127.0.0.1:9001
+    access-key: admin
+    secret-key: admin123
+    bucket: simonjp
+    region: us-east-1
+    path-style-access: true
