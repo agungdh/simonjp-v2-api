@@ -61,7 +61,9 @@ Tabel saat ini: `pegawai` (`nama`, `nip` unique partial); `users` (`username` un
 ## Auth (opaque token di Valkey)
 
 - **Bukan JWT**. Token acak 256-bit; yang disimpan di Valkey = **hash SHA-256 token**, key
-  `auth:sess:<sha256>` (raw token tidak pernah persist), value `id|uuid|username|pegawaiId`.
+  `auth:sess:<sha256>` (raw token tidak pernah persist), **value = `userId` saja**. Data lain
+  (`uuid`, `username`, `pegawaiId`) diambil dari DB tiap request (`AuthenticatedUserService`),
+  jadi session tidak basi dan user soft-deleted otomatis ditolak (session + cookie dibuang).
 - Kirim via cookie HttpOnly (web; `app.auth.cookie-name`) **atau** `Authorization: Bearer`
   (mobile/desktop; token juga dikembalikan di body login).
 - **Sliding expiry**: TTL di-reset ke penuh bila sisa TTL < `app.auth.renew-threshold` × TTL;

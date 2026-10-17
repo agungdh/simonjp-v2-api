@@ -47,10 +47,7 @@ public class AuthService {
         User user = userRepository.findByUsername(request.username())
             .orElseThrow(() -> new BadCredentialsException("Username atau password salah"));
 
-        AuthenticatedUser principal = new AuthenticatedUser(
-            user.getId(), user.getUuid(), user.getUsername(), user.getPegawai().getId());
-
-        String token = tokenService.issue(principal);
+        String token = tokenService.issue(user.getId());
         return new LoginResult(token, properties.tokenTtl());
     }
 

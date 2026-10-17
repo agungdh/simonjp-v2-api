@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -30,15 +29,30 @@ public class OpaqueTokenService {
         this.properties = properties;
     }
 
-    public String issue(AuthenticatedUser user) {
+    public String issue(Long userId) {
         String token = generateToken();
-        redis.opsForValue().set(key(token), encode(user), properties.tokenTtl());
+        redis.opsForValue().set(key(token), userId.toString(), properties.tokenTtl());
         return token;
     }
 
-    public Optional<AuthenticatedUser> resolve(String token) {
-        return Optional.ofNullable(redis.opsForValue().get(key(token)))
-            .map(OpaqueTokenService::decode);
+    /**
+     * Isi session cuma id user; data principal lain ({@code uuid}, {@code username},
+     * {@code pegawaiId}) diambil dari DB tiap request lewat
+     * {@link AuthenticatedUserService}, jadi user yang dihapus/diubah langsung terlihat.
+     *
+     * @return id user, atau kosong bila token tidak ada / isinya tidak valid.
+     */
+    public Optional<Long> resolve(String token) {
+        String value = redis.opsForValue().get(key(token));
+        if (value == null || value.isBlank()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(Long.valueOf(value));
+        } catch (NumberFormatException e) {
+            // isi session rusak / format lama: perlakukan sebagai token tidak valid
+            return Optional.empty();
+        }
     }
 
     /**
@@ -74,21 +88,6 @@ public class OpaqueTokenService {
 
     private static String key(String token) {
         return KEY_PREFIX + sha256Hex(token);
-    }
-
-    // username dibatasi charset [A-Za-z0-9._-] lewat validasi DTO, jadi delimiter "|" aman.
-    private static String encode(AuthenticatedUser user) {
-        return user.id() + "|" + user.uuid() + "|" + user.username() + "|" + user.pegawaiId();
-    }
-
-    private static AuthenticatedUser decode(String value) {
-        String[] parts = value.split("\\|", -1);
-        return new AuthenticatedUser(
-            Long.valueOf(parts[0]),
-            UUID.fromString(parts[1]),
-            parts[2],
-            Long.valueOf(parts[3])
-        );
     }
 
     private static String sha256Hex(String input) {

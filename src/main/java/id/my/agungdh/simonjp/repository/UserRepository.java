@@ -15,6 +15,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     /**
+     * Buat principal per request ({@code AuthenticatedUserService}); {@code pegawai} di-fetch
+     * sekalian karena relasinya lazy dan {@code open-in-view} dimatikan.
+     */
+    @Query("select u from User u join fetch u.pegawai where u.id = :id")
+    Optional<User> findByIdWithPegawai(@Param("id") Long id);
+
+    /**
      * Soft delete: mengisi {@code deleted_at} + {@code deleted_by}. Query baca
      * otomatis terfilter oleh {@code @SQLRestriction("deleted_at is null")}.
      */
