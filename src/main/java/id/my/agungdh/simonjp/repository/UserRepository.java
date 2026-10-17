@@ -1,6 +1,6 @@
 package id.my.agungdh.simonjp.repository;
 
-import id.my.agungdh.simonjp.domain.User;
+import id.my.agungdh.simonjp.entity.User;
 import java.time.Instant;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

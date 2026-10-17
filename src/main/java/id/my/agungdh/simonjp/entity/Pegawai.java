@@ -1,4 +1,4 @@
-package id.my.agungdh.simonjp.domain;
+package id.my.agungdh.simonjp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

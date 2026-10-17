@@ -35,7 +35,7 @@ docker compose up -d     # prasyarat run & test: postgres + valkey (plus minio, 
 ```
 
 DB dev `localhost:5432/simonjp` (`admin`/`admin`); Valkey `localhost:6379`.
-Base package `id.my.agungdh.simonjp`; struktur: `config/ domain/ repository/ security/ service/ controller/ dto/ mapper/`.
+Base package `id.my.agungdh.simonjp`; struktur: `config/ entity/ repository/ security/ service/ controller/ dto/ mapper/`.
 
 ## Konvensi skema (WAJIB, semua tabel baru)
 

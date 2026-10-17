@@ -1,7 +1,7 @@
 package id.my.agungdh.simonjp.service;
 
 import id.my.agungdh.simonjp.config.AppAuthProperties;
-import id.my.agungdh.simonjp.domain.User;
+import id.my.agungdh.simonjp.entity.User;
 import id.my.agungdh.simonjp.dto.LoginRequest;
 import id.my.agungdh.simonjp.dto.MeResponse;
 import id.my.agungdh.simonjp.mapper.UserMapper;

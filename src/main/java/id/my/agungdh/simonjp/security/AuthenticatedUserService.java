@@ -1,6 +1,6 @@
 package id.my.agungdh.simonjp.security;
 
-import id.my.agungdh.simonjp.domain.User;
+import id.my.agungdh.simonjp.entity.User;
 import id.my.agungdh.simonjp.repository.UserRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;

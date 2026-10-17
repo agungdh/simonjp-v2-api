@@ -1,6 +1,6 @@
 package id.my.agungdh.simonjp.mapper;
 
-import id.my.agungdh.simonjp.domain.User;
+import id.my.agungdh.simonjp.entity.User;
 import id.my.agungdh.simonjp.dto.MeResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
