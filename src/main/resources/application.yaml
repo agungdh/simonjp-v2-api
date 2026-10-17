@@ -47,6 +47,15 @@ spring:
 # Belum ada client dependency, jadi properti custom ini tinggal dibaca
 # saat MinIO/S3 client ditambahkan nanti.
 app:
+  auth:
+    # Masa berlaku token; juga dipakai sebagai Max-Age cookie.
+    token-ttl: 12h
+    # Sliding renewal: perpanjang bila sisa TTL < token-ttl * renew-threshold. <=0 = selalu.
+    renew-threshold: 0.5
+    cookie-name: simonjp_token
+    # Set true kalau dilayani via HTTPS (production).
+    cookie-secure: false
+    cookie-same-site: Lax
   s3:
     endpoint: http://127.0.0.1:9000
     console-endpoint: http://127.0.0.1:9001
