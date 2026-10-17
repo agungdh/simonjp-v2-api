@@ -22,9 +22,10 @@ public class OpaqueTokenService {
 
     private static final String KEY_PREFIX = "auth:sess:";
 
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     private final StringRedisTemplate redis;
     private final AppAuthProperties properties;
-    private final SecureRandom random = new SecureRandom();
 
     public String issue(Long userId) {
         String token = generateToken();
@@ -79,7 +80,7 @@ public class OpaqueTokenService {
 
     private String generateToken() {
         byte[] bytes = new byte[32];
-        random.nextBytes(bytes);
+        RANDOM.nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
