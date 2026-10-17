@@ -77,5 +77,10 @@ Tabel saat ini: `pegawai` (`nama`, `nip` unique partial); `users` (`username` un
 
 - File `V<n>__<snake_case>.sql`; **immutable** setelah di-commit → perubahan skema = file baru.
 - Hash BCrypt untuk seed: hasil `BCryptPasswordEncoder`, jangan plaintext.
+- Boilerplate wajib pakai Lombok, jangan tulis manual: entity `@Getter/@Setter/@NoArgsConstructor`,
+  injection `@RequiredArgsConstructor` (field `final`, tanpa constructor manual), logger `@Slf4j`.
+  DTO tetap `record` (bukan `@Data`). **Jangan** pakai annotation experimental
+  (`lombok.experimental.*`, mis. `@UtilityClass`) — untuk helper stateless pakai
+  `final class` + private constructor manual.
 - MapStruct wajib `@Mapper(componentModel = "spring")`. DTO = `record` + Bean Validation (`@Valid`).
 - Error API seragam lewat `ApiExceptionHandler` (`{ code, message }`).

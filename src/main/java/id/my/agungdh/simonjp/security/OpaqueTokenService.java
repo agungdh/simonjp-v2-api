@@ -8,6 +8,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * yang disimpan adalah hash SHA-256 dari token (raw token tidak pernah persist).
  */
 @Service
+@RequiredArgsConstructor
 public class OpaqueTokenService {
 
     private static final String KEY_PREFIX = "auth:sess:";
@@ -23,11 +25,6 @@ public class OpaqueTokenService {
     private final StringRedisTemplate redis;
     private final AppAuthProperties properties;
     private final SecureRandom random = new SecureRandom();
-
-    public OpaqueTokenService(StringRedisTemplate redis, AppAuthProperties properties) {
-        this.redis = redis;
-        this.properties = properties;
-    }
 
     public String issue(Long userId) {
         String token = generateToken();

@@ -3,6 +3,7 @@ package id.my.agungdh.simonjp.security;
 import id.my.agungdh.simonjp.entity.User;
 import id.my.agungdh.simonjp.repository.UserRepository;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
  * (mis. username/pegawai) ikut terpakai.
  */
 @Service
+@RequiredArgsConstructor
 public class AuthenticatedUserService {
 
     private final UserRepository userRepository;
-
-    public AuthenticatedUserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * @return principal, atau kosong bila user sudah tidak ada / soft-deleted — session

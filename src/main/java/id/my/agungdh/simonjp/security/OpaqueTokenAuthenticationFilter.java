@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,24 +26,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * <p>Valkey cuma menyimpan id user, jadi data utama principal diambil dari DB tiap
  * request lewat {@link AuthenticatedUserService}.
  */
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class OpaqueTokenAuthenticationFilter extends OncePerRequestFilter {
-
-    private static final Logger log = LoggerFactory.getLogger(OpaqueTokenAuthenticationFilter.class);
 
     private final OpaqueTokenService tokenService;
     private final AuthenticatedUserService authenticatedUserService;
     private final AppAuthProperties properties;
-
-    public OpaqueTokenAuthenticationFilter(
-        OpaqueTokenService tokenService,
-        AuthenticatedUserService authenticatedUserService,
-        AppAuthProperties properties
-    ) {
-        this.tokenService = tokenService;
-        this.authenticatedUserService = authenticatedUserService;
-        this.properties = properties;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

@@ -9,6 +9,7 @@ import id.my.agungdh.simonjp.repository.UserRepository;
 import id.my.agungdh.simonjp.security.AuthenticatedUser;
 import id.my.agungdh.simonjp.security.OpaqueTokenService;
 import java.time.Duration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -24,20 +26,6 @@ public class AuthService {
     private final OpaqueTokenService tokenService;
     private final UserMapper userMapper;
     private final AppAuthProperties properties;
-
-    public AuthService(
-        AuthenticationManager authenticationManager,
-        UserRepository userRepository,
-        OpaqueTokenService tokenService,
-        UserMapper userMapper,
-        AppAuthProperties properties
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.tokenService = tokenService;
-        this.userMapper = userMapper;
-        this.properties = properties;
-    }
 
     @Transactional(readOnly = true)
     public LoginResult login(LoginRequest request) {
